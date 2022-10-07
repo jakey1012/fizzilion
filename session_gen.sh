@@ -14,7 +14,7 @@ echo -e "${GREEN} Checking for requirements${NC}\n"
 check(){
 	sleep 0.15
 	pkg=$1
-	command -v $pkg &>/dev/null;stat=$?
+	command -v $pkg;stat=$?
 	if [ "$stat" -ne "0" ]; then
 		absent+="$pkg "
 	fi
@@ -22,8 +22,6 @@ check(){
 }
 
 instl(){
-	sleep 0.2
-	echo -e "${RED} Requirements: $absent not found, trying to install"
 	sleep 0.2
 	if [ -e /data/data/com.termux/files/usr/bin/termux-info ]; then
 	        echo -e "${GREEN} Detected Termux! Installing requirements for termux ${NC}"
@@ -33,7 +31,7 @@ instl(){
 	elif [ -e /usr/bin/apt ]; then
 		echo -e "${GREEN} Detected Debian based distro! Trying to install requirements ${NC}"
 		sudo apt update
-		sudo apt install python3 python3-pip -y
+		sudo apt install $1 -y
 	else
 		echo -e "${YELLOW} \n\nUnknown System Detected... Please install \n $1 \n  for your distro \nA quick google search will help if you don't know how to \n\n ${NC}"
 		sleep 3
@@ -52,16 +50,7 @@ fi
 sleep 0.5
 echo -e "${YELLOW} Checking for telethon ${NC}\n"
 pip3 list --disable-pip-version-check | grep Telethon &>/dev/null ;tc=$?
-if [ "$tc" != 0 ]; then
-	pip3 install telethon
-else
-	echo -e "${GREEN} Telethon Already Installed, continuing... ${NC}"
-fi
-echo -e "${GREEN} Done! ${NC}\n\n"
-
-sleep 0.3
-echo -e "${Blue} Downloading string session generator script ${NC}"
-curl https://raw.githubusercontent.com/FrosT2k5/ProjectFizilion/demon/string_session.py > string_session.py
+pip3 install telethon
 echo -e "${GREEN} Done! ${NC}\n\n"
 
 sleep 2
